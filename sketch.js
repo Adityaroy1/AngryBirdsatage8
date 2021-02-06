@@ -11,7 +11,8 @@ var bird, slingshot;
 var gameState = "onSling";
 
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
+  //  backgroundImg = loadImage("sprites/bg.png");
+    getBackgroundImage();
 }
 
 function setup(){
@@ -45,7 +46,9 @@ function setup(){
 }
 
 function draw(){
-    background(backgroundImg);
+    if(backgroundImg){
+     background(backgroundImg);
+    }
     Engine.update(engine);
     //strokeWeight(4);
     box1.display();
@@ -86,3 +89,25 @@ function keyPressed(){
        // slingshot.attach(bird.body);
     }
 }
+
+async function getBackgroundImage(){
+    var response=await fetch("https://worldtimeapi.org/api/timezone/Asia/Tokyo")
+    
+    var responseJSON=await response.json()
+ var dateTime= responseJSON.datetime
+ var hour= dateTime.slice(11, 13)
+
+ if(hour>06 && hour <19){
+     // daytime background image
+    bg="sprites/bg.png"
+ }
+ else{
+     //nightime background image
+     bg="sprites/bg2.jpg"
+ }
+ console.log(bg)
+ backgroundImg= loadImage(bg)
+}   
+
+//synchronous execution of code... line by line
+//asynchornonos function: run parallel to other code.
